@@ -1,9 +1,9 @@
 /* src/styles/mdmc-theme.css */
 :root {
-  /* MDMC Brand Colors */
-  --mdmc-red: #E53E3E;
-  --mdmc-red-dark: #C53030;
-  --mdmc-red-light: #FEB2B2;
+  /* MDMC Brand Colors - Basées sur le logo officiel */
+  --mdmc-red: #FF4444;
+  --mdmc-red-dark: #E63946;
+  --mdmc-red-light: #FF6B6B;
   --mdmc-red-50: #FEF2F2;
   --mdmc-red-100: #FEE2E2;
   --mdmc-red-200: #FECACA;

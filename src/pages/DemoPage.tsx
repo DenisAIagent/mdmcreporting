@@ -2,129 +2,180 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Sparkles, 
-  Brain, 
-  Zap, 
-  Target, 
-  FileText, 
-  BarChart3,
-  ArrowRight,
-  CheckCircle
-} from 'lucide-react';
 import AISimulator from '@/components/demo/AISimulator';
 
 export default function DemoPage() {
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      {/* Header Hero */}
-      <Card className="gradient-mdmc text-white">
-        <CardContent className="p-8 text-center">
-          <div className="flex justify-center mb-4">
+    <div className="container mx-auto p-6 space-y-8">
+      {/* Header Hero - Design Moderne */}
+      <Card className="gradient-mdmc text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24"></div>
+        <CardContent className="p-12 text-center relative z-10">
+          <div className="flex justify-center mb-6">
             <img 
               src="/assets/MDMC_logo_noir fond transparent.png" 
               alt="MDMC Logo" 
-              className="h-16 w-auto brightness-0 invert"
+              className="h-20 w-auto brightness-0 invert"
             />
           </div>
-          <h1 className="text-3xl font-bold mb-2">
-            🚀 MDMC Reporting IA - Démonstration
+          <h1 className="text-4xl font-bold mb-4 text-white drop-shadow-lg">
+            MDMC Reporting IA - Démonstration
           </h1>
-          <p className="text-xl opacity-90 mb-4">
-            Assistant IA conversationnel propulsé par Gemini 2.5 Pro
+          <p className="text-xl opacity-90 mb-6 max-w-2xl mx-auto">
+            Assistant IA conversationnel propulsé par Gemini 2.5 Pro pour l'analyse intelligente de vos campagnes Google Ads
           </p>
-          <div className="flex flex-wrap justify-center gap-2">
-            <Badge className="bg-white/20 text-white">Gemini 2.5 Pro</Badge>
-            <Badge className="bg-white/20 text-white">React + TypeScript</Badge>
-            <Badge className="bg-white/20 text-white">Google Ads</Badge>
-            <Badge className="bg-white/20 text-white">Exports Automatiques</Badge>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Badge className="bg-white/20 text-white border-white/30 px-4 py-1">Gemini 2.5 Pro</Badge>
+            <Badge className="bg-white/20 text-white border-white/30 px-4 py-1">React + TypeScript</Badge>
+            <Badge className="bg-white/20 text-white border-white/30 px-4 py-1">Google Ads API</Badge>
+            <Badge className="bg-white/20 text-white border-white/30 px-4 py-1">Exports Automatiques</Badge>
           </div>
         </CardContent>
       </Card>
 
-      {/* Fonctionnalités Principales */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="card-mdmc-hover">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-[var(--mdmc-red)]">
-              <Brain className="h-6 w-6" />
+      {/* Fonctionnalités Principales - Design Épuré */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <Card className="card-mdmc-hover group relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FF4444] to-[#E63946]"></div>
+          <CardHeader className="pb-4">
+            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#FFF5F5] to-[#FFE5E5] mb-4 flex items-center justify-center">
+              <div className="triangle-right" style={{
+                width: 0,
+                height: 0,
+                borderTop: '8px solid transparent',
+                borderBottom: '8px solid transparent', 
+                borderLeft: '12px solid #FF4444'
+              }}></div>
+            </div>
+            <CardTitle className="text-[#FF4444] text-xl">
               IA Conversationnelle
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2 text-sm text-[var(--mdmc-gray-600)]">
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+            <ul className="space-y-3 text-sm text-[#4B5563]">
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Requêtes en français naturel
               </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Compréhension contextuelle Google Ads
               </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Transformation requête → JSON structuré
               </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Sessions de conversation intelligentes
               </li>
             </ul>
           </CardContent>
         </Card>
 
-        <Card className="card-mdmc-hover">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-[var(--mdmc-red)]">
-              <BarChart3 className="h-6 w-6" />
+        <Card className="card-mdmc-hover group relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FF4444] to-[#E63946]"></div>
+          <CardHeader className="pb-4">
+            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#FFF5F5] to-[#FFE5E5] mb-4 flex items-center justify-center">
+              <div className="flex gap-1">
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: '6px solid transparent',
+                  borderBottom: '6px solid transparent',
+                  borderLeft: '8px solid #FF4444'
+                }}></div>
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: '6px solid transparent',
+                  borderBottom: '6px solid transparent',
+                  borderLeft: '8px solid #E63946'
+                }}></div>
+              </div>
+            </div>
+            <CardTitle className="text-[#FF4444] text-xl">
               Analyses Avancées
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2 text-sm text-[var(--mdmc-gray-600)]">
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+            <ul className="space-y-3 text-sm text-[#4B5563]">
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Performance campagnes, mots-clés
               </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Analyses temporelles (18 mois max)
               </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Comparaisons multi-dimensionnelles
               </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Métriques spécialisées (ROAS, CTR, CPC)
               </li>
             </ul>
           </CardContent>
         </Card>
 
-        <Card className="card-mdmc-hover">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-[var(--mdmc-red)]">
-              <FileText className="h-6 w-6" />
+        <Card className="card-mdmc-hover group relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FF4444] to-[#E63946]"></div>
+          <CardHeader className="pb-4">
+            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#FFF5F5] to-[#FFE5E5] mb-4 flex items-center justify-center">
+              <div className="grid grid-cols-2 gap-1">
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '4px solid transparent',
+                  borderRight: '4px solid transparent',
+                  borderBottom: '6px solid #FF4444'
+                }}></div>
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '4px solid transparent',
+                  borderRight: '4px solid transparent',
+                  borderBottom: '6px solid #E63946'
+                }}></div>
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '4px solid transparent',
+                  borderRight: '4px solid transparent',
+                  borderTop: '6px solid #E63946'
+                }}></div>
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '4px solid transparent',
+                  borderRight: '4px solid transparent',
+                  borderTop: '6px solid #FF4444'
+                }}></div>
+              </div>
+            </div>
+            <CardTitle className="text-[#FF4444] text-xl">
               Exports Automatiques
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2 text-sm text-[var(--mdmc-gray-600)]">
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+            <ul className="space-y-3 text-sm text-[#4B5563]">
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Rapports PDF professionnels
               </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Données Excel structurées
               </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Fichiers CSV pour analyses
               </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <li className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 Génération automatique sur demande
               </li>
             </ul>
@@ -133,14 +184,20 @@ export default function DemoPage() {
       </div>
 
       {/* Démonstration Interactive */}
-      <Tabs defaultValue="simulator" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="simulator" className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4" />
+      <Tabs defaultValue="simulator" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2 h-12">
+          <TabsTrigger value="simulator" className="flex items-center gap-3 text-base">
+            <div style={{
+              width: 0,
+              height: 0,
+              borderTop: '4px solid transparent',
+              borderBottom: '4px solid transparent',
+              borderLeft: '6px solid #FF4444'
+            }}></div>
             Simulateur IA
           </TabsTrigger>
-          <TabsTrigger value="examples" className="flex items-center gap-2">
-            <Target className="h-4 w-4" />
+          <TabsTrigger value="examples" className="flex items-center gap-3 text-base">
+            <div className="w-3 h-3 rounded bg-[#FF4444]"></div>
             Exemples & Guide
           </TabsTrigger>
         </TabsList>
@@ -150,56 +207,77 @@ export default function DemoPage() {
         </TabsContent>
 
         <TabsContent value="examples">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Exemples de Requêtes */}
-            <Card className="card-mdmc">
-              <CardHeader>
-                <CardTitle className="text-[var(--mdmc-red)]">
-                  💬 Exemples de Requêtes IA
-                </CardTitle>
+            <Card className="card-mdmc relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF4444] to-[#E63946]"></div>
+              <CardHeader className="pt-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#FF4444] to-[#E63946] flex items-center justify-center">
+                    <div style={{
+                      width: 0,
+                      height: 0,
+                      borderTop: '4px solid transparent',
+                      borderBottom: '4px solid transparent',
+                      borderLeft: '6px solid white'
+                    }}></div>
+                  </div>
+                  <CardTitle className="text-[#FF4444] text-xl">
+                    Exemples de Requêtes IA
+                  </CardTitle>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <h4 className="font-medium text-[var(--mdmc-black)]">Analyses Simples</h4>
-                  <div className="space-y-2">
-                    <div className="bg-[var(--mdmc-gray-50)] p-3 rounded-lg">
-                      <code className="text-sm">"Top 10 campagnes ce mois"</code>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-[#1F2937] flex items-center gap-2">
+                    <div className="w-4 h-0.5 bg-[#FF4444] rounded"></div>
+                    Analyses Simples
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="bg-[#F9FAFB] border-l-4 border-[#FF4444] p-4 rounded-r-lg">
+                      <code className="text-sm font-medium text-[#374151]">"Top 10 campagnes ce mois"</code>
                     </div>
-                    <div className="bg-[var(--mdmc-gray-50)] p-3 rounded-lg">
-                      <code className="text-sm">"Mots-clés performants du trimestre"</code>
+                    <div className="bg-[#F9FAFB] border-l-4 border-[#FF4444] p-4 rounded-r-lg">
+                      <code className="text-sm font-medium text-[#374151]">"Mots-clés performants du trimestre"</code>
                     </div>
-                    <div className="bg-[var(--mdmc-gray-50)] p-3 rounded-lg">
-                      <code className="text-sm">"ROAS moyen des 30 derniers jours"</code>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="font-medium text-[var(--mdmc-black)]">Analyses Complexes</h4>
-                  <div className="space-y-2">
-                    <div className="bg-[var(--mdmc-gray-50)] p-3 rounded-lg">
-                      <code className="text-sm">"Campagnes avec budget épuisé avant 80% du mois"</code>
-                    </div>
-                    <div className="bg-[var(--mdmc-gray-50)] p-3 rounded-lg">
-                      <code className="text-sm">"Évolution ROAS sur 18 mois par trimestre"</code>
-                    </div>
-                    <div className="bg-[var(--mdmc-gray-50)] p-3 rounded-lg">
-                      <code className="text-sm">"Comparaison mobile vs desktop ce semestre"</code>
+                    <div className="bg-[#F9FAFB] border-l-4 border-[#FF4444] p-4 rounded-r-lg">
+                      <code className="text-sm font-medium text-[#374151]">"ROAS moyen des 30 derniers jours"</code>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <h4 className="font-medium text-[var(--mdmc-black)]">Exports</h4>
-                  <div className="space-y-2">
-                    <div className="bg-[var(--mdmc-gray-50)] p-3 rounded-lg">
-                      <code className="text-sm">"Rapport PDF mensuel avec graphiques"</code>
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-[#1F2937] flex items-center gap-2">
+                    <div className="w-4 h-0.5 bg-[#FF4444] rounded"></div>
+                    Analyses Complexes
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="bg-[#F9FAFB] border-l-4 border-[#E63946] p-4 rounded-r-lg">
+                      <code className="text-sm font-medium text-[#374151]">"Campagnes avec budget épuisé avant 80% du mois"</code>
                     </div>
-                    <div className="bg-[var(--mdmc-gray-50)] p-3 rounded-lg">
-                      <code className="text-sm">"Export Excel des campagnes sur 6 mois"</code>
+                    <div className="bg-[#F9FAFB] border-l-4 border-[#E63946] p-4 rounded-r-lg">
+                      <code className="text-sm font-medium text-[#374151]">"Évolution ROAS sur 18 mois par trimestre"</code>
                     </div>
-                    <div className="bg-[var(--mdmc-gray-50)] p-3 rounded-lg">
-                      <code className="text-sm">"Données CSV des mots-clés triés par CPC"</code>
+                    <div className="bg-[#F9FAFB] border-l-4 border-[#E63946] p-4 rounded-r-lg">
+                      <code className="text-sm font-medium text-[#374151]">"Comparaison mobile vs desktop ce semestre"</code>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-[#1F2937] flex items-center gap-2">
+                    <div className="w-4 h-0.5 bg-[#FF4444] rounded"></div>
+                    Exports
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="bg-[#F9FAFB] border-l-4 border-[#FF6B6B] p-4 rounded-r-lg">
+                      <code className="text-sm font-medium text-[#374151]">"Rapport PDF mensuel avec graphiques"</code>
+                    </div>
+                    <div className="bg-[#F9FAFB] border-l-4 border-[#FF6B6B] p-4 rounded-r-lg">
+                      <code className="text-sm font-medium text-[#374151]">"Export Excel des campagnes sur 6 mois"</code>
+                    </div>
+                    <div className="bg-[#F9FAFB] border-l-4 border-[#FF6B6B] p-4 rounded-r-lg">
+                      <code className="text-sm font-medium text-[#374151]">"Données CSV des mots-clés triés par CPC"</code>
                     </div>
                   </div>
                 </div>
@@ -207,64 +285,103 @@ export default function DemoPage() {
             </Card>
 
             {/* Workflow IA */}
-            <Card className="card-mdmc">
-              <CardHeader>
-                <CardTitle className="text-[var(--mdmc-red)]">
-                  🔄 Workflow de l'IA
-                </CardTitle>
+            <Card className="card-mdmc relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF4444] to-[#E63946]"></div>
+              <CardHeader className="pt-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#FF4444] to-[#E63946] flex items-center justify-center">
+                    <div className="flex gap-0.5">
+                      <div style={{
+                        width: 0,
+                        height: 0,
+                        borderTop: '3px solid transparent',
+                        borderBottom: '3px solid transparent',
+                        borderLeft: '4px solid white'
+                      }}></div>
+                      <div style={{
+                        width: 0,
+                        height: 0,
+                        borderTop: '3px solid transparent',
+                        borderBottom: '3px solid transparent',
+                        borderLeft: '4px solid white'
+                      }}></div>
+                    </div>
+                  </div>
+                  <CardTitle className="text-[#FF4444] text-xl">
+                    Workflow de l'IA
+                  </CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-[var(--mdmc-red)] text-white rounded-full flex items-center justify-center text-sm font-bold">
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#FF4444] to-[#E63946] text-white rounded-lg flex items-center justify-center text-lg font-bold shadow-lg">
                       1
                     </div>
-                    <div>
-                      <h4 className="font-medium text-[var(--mdmc-black)]">Analyse Linguistique</h4>
-                      <p className="text-sm text-[var(--mdmc-gray-600)]">
-                        Gemini 2.5 Pro décompose votre requête en français
+                    <div className="pt-1">
+                      <h4 className="font-semibold text-[#1F2937] mb-1">Analyse Linguistique</h4>
+                      <p className="text-sm text-[#4B5563] leading-relaxed">
+                        Gemini 2.5 Pro décompose votre requête en français et identifie les intentions métier
                       </p>
                     </div>
                   </div>
 
-                  <ArrowRight className="h-4 w-4 text-[var(--mdmc-gray-400)] mx-4" />
+                  <div className="flex justify-center">
+                    <div className="w-0.5 h-8 bg-gradient-to-b from-[#FF4444] to-[#E63946] rounded-full"></div>
+                  </div>
 
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-[var(--mdmc-red)] text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#FF4444] to-[#E63946] text-white rounded-lg flex items-center justify-center text-lg font-bold shadow-lg">
                       2
                     </div>
-                    <div>
-                      <h4 className="font-medium text-[var(--mdmc-black)]">Transformation Structurée</h4>
-                      <p className="text-sm text-[var(--mdmc-gray-600)]">
-                        Conversion en JSON compatible Google Ads API
+                    <div className="pt-1">
+                      <h4 className="font-semibold text-[#1F2937] mb-1">Transformation Structurée</h4>
+                      <p className="text-sm text-[#4B5563] leading-relaxed">
+                        Conversion intelligente en JSON parfaitement compatible avec l'API Google Ads
                       </p>
                     </div>
                   </div>
 
-                  <ArrowRight className="h-4 w-4 text-[var(--mdmc-gray-400)] mx-4" />
+                  <div className="flex justify-center">
+                    <div className="w-0.5 h-8 bg-gradient-to-b from-[#FF4444] to-[#E63946] rounded-full"></div>
+                  </div>
 
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-[var(--mdmc-red)] text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#FF4444] to-[#E63946] text-white rounded-lg flex items-center justify-center text-lg font-bold shadow-lg">
                       3
                     </div>
-                    <div>
-                      <h4 className="font-medium text-[var(--mdmc-black)]">Exécution & Export</h4>
-                      <p className="text-sm text-[var(--mdmc-gray-600)]">
-                        Requête API + génération automatique de rapports
+                    <div className="pt-1">
+                      <h4 className="font-semibold text-[#1F2937] mb-1">Exécution & Export</h4>
+                      <p className="text-sm text-[#4B5563] leading-relaxed">
+                        Exécution de la requête API et génération automatique de rapports professionnels
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <Zap className="h-4 w-4 text-green-600" />
-                      <span className="font-medium text-green-800">Performance</span>
+                  <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full"></div>
+                      </div>
+                      <span className="font-semibold text-green-800 text-lg">Performance</span>
                     </div>
-                    <ul className="text-sm text-green-700 mt-2 space-y-1">
-                      <li>• Latence : &lt; 2 secondes</li>
-                      <li>• Coût : ~0.007€ par requête</li>
-                      <li>• Précision : &gt; 95%</li>
-                      <li>• Disponibilité : 24/7</li>
+                    <ul className="grid grid-cols-2 gap-3 text-sm text-green-700">
+                      <li className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                        Latence : &lt; 2 secondes
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                        Coût : ~0.007€ par requête
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                        Précision : &gt; 95%
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                        Disponibilité : 24/7
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -274,45 +391,103 @@ export default function DemoPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Technologies */}
-      <Card className="card-mdmc">
-        <CardHeader>
-          <CardTitle className="text-[var(--mdmc-red)]">
-            🛠️ Stack Technique
-          </CardTitle>
+      {/* Technologies - Design Minimaliste */}
+      <Card className="card-mdmc relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF4444] to-[#E63946]"></div>
+        <CardHeader className="pt-6">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#FF4444] to-[#E63946] flex items-center justify-center">
+              <div className="grid grid-cols-2 gap-0.5">
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '2px solid transparent',
+                  borderRight: '2px solid transparent',
+                  borderBottom: '3px solid white'
+                }}></div>
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: '2px solid transparent',
+                  borderBottom: '2px solid transparent',
+                  borderLeft: '3px solid white'
+                }}></div>
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '2px solid transparent',
+                  borderRight: '2px solid transparent',
+                  borderTop: '3px solid white'
+                }}></div>
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: '2px solid transparent',
+                  borderBottom: '2px solid transparent',
+                  borderRight: '3px solid white'
+                }}></div>
+              </div>
+            </div>
+            <CardTitle className="text-[#FF4444] text-xl">
+              Stack Technique
+            </CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div className="space-y-2">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto">
-                <span className="text-xl">⚛️</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="space-y-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center mx-auto shadow-sm">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg"></div>
               </div>
-              <h4 className="font-medium">React 18</h4>
-              <p className="text-xs text-[var(--mdmc-gray-600)]">Interface moderne</p>
+              <div>
+                <h4 className="font-semibold text-[#1F2937]">React 18</h4>
+                <p className="text-xs text-[#6B7280] mt-1">Interface moderne</p>
+              </div>
             </div>
             
-            <div className="space-y-2">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto">
-                <span className="text-xl">🤖</span>
+            <div className="space-y-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl flex items-center justify-center mx-auto shadow-sm">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg"></div>
               </div>
-              <h4 className="font-medium">Gemini 2.5</h4>
-              <p className="text-xs text-[var(--mdmc-gray-600)]">IA conversationnelle</p>
+              <div>
+                <h4 className="font-semibold text-[#1F2937]">Gemini 2.5</h4>
+                <p className="text-xs text-[#6B7280] mt-1">IA conversationnelle</p>
+              </div>
             </div>
             
-            <div className="space-y-2">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto">
-                <span className="text-xl">📊</span>
+            <div className="space-y-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-50 to-green-100 rounded-xl flex items-center justify-center mx-auto shadow-sm">
+                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-lg"></div>
               </div>
-              <h4 className="font-medium">Google Ads</h4>
-              <p className="text-xs text-[var(--mdmc-gray-600)]">API intégrée</p>
+              <div>
+                <h4 className="font-semibold text-[#1F2937]">Google Ads</h4>
+                <p className="text-xs text-[#6B7280] mt-1">API intégrée</p>
+              </div>
             </div>
             
-            <div className="space-y-2">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto">
-                <span className="text-xl">🎨</span>
+            <div className="space-y-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#FFF5F5] to-[#FFE5E5] rounded-xl flex items-center justify-center mx-auto shadow-sm">
+                <div className="flex gap-1">
+                  <div style={{
+                    width: 0,
+                    height: 0,
+                    borderTop: '8px solid transparent',
+                    borderBottom: '8px solid transparent',
+                    borderLeft: '12px solid #FF4444'
+                  }}></div>
+                  <div style={{
+                    width: 0,
+                    height: 0,
+                    borderTop: '8px solid transparent',
+                    borderBottom: '8px solid transparent',
+                    borderLeft: '12px solid #E63946'
+                  }}></div>
+                </div>
               </div>
-              <h4 className="font-medium">MDMC Design</h4>
-              <p className="text-xs text-[var(--mdmc-gray-600)]">Charte respectée</p>
+              <div>
+                <h4 className="font-semibold text-[#1F2937]">MDMC Design</h4>
+                <p className="text-xs text-[#6B7280] mt-1">Charte respectée</p>
+              </div>
             </div>
           </div>
         </CardContent>

@@ -261,9 +261,9 @@ export default function DemoPage() {
                       <span className="font-medium text-green-800">Performance</span>
                     </div>
                     <ul className="text-sm text-green-700 mt-2 space-y-1">
-                      <li>• Latence : < 2 secondes</li>
+                      <li>• Latence : &lt; 2 secondes</li>
                       <li>• Coût : ~0.007€ par requête</li>
-                      <li>• Précision : > 95%</li>
+                      <li>• Précision : &gt; 95%</li>
                       <li>• Disponibilité : 24/7</li>
                     </ul>
                   </div>

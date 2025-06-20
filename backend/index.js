@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import { v4 as uuidv4 } from 'uuid';
+import GoogleAdsService from './services/googleAdsService.js';
 
 dotenv.config();
 
@@ -20,6 +21,9 @@ app.use(cors({
 
 // Configuration de l'API Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// Instance du service Google Ads
+const googleAdsService = new GoogleAdsService();
 
 // Prompt système optimisé pour Google Ads et MDMC
 const systemPrompt = `
@@ -233,6 +237,252 @@ app.post('/api/test', async (req, res) => {
     res.status(500).json({ 
       success: false, 
       error: 'Erreur de connexion Gemini' 
+    });
+  }
+});
+
+// ENDPOINTS GOOGLE ADS AUTHENTIFICATION
+
+// Obtenir l'URL d'authentification Google
+app.get('/api/google-ads/auth-url', (req, res) => {
+  try {
+    const authUrl = googleAdsService.getAuthUrl();
+    res.json({ 
+      success: true, 
+      authUrl,
+      message: 'URL d\'authentification générée'
+    });
+  } catch (error) {
+    console.error('Erreur génération URL auth:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Erreur lors de la génération de l\'URL d\'authentification' 
+    });
+  }
+});
+
+// Échanger le code d'autorisation contre des tokens
+app.post('/api/google-ads/auth-callback', async (req, res) => {
+  const { code } = req.body;
+  
+  if (!code) {
+    return res.status(400).json({ 
+      success: false, 
+      error: 'Code d\'autorisation requis' 
+    });
+  }
+
+  try {
+    const tokens = await googleAdsService.getTokensFromCode(code);
+    
+    // En production, sauvegarder ces tokens en base de données associés à l'utilisateur
+    console.log('Tokens Google Ads obtenus:', {
+      expires_at: tokens.expires_at,
+      hasAccessToken: !!tokens.access_token,
+      hasRefreshToken: !!tokens.refresh_token
+    });
+
+    res.json({ 
+      success: true, 
+      tokens,
+      message: 'Authentification Google Ads réussie'
+    });
+  } catch (error) {
+    console.error('Erreur callback auth:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Erreur lors de l\'authentification Google Ads' 
+    });
+  }
+});
+
+// Initialiser la connexion Google Ads
+app.post('/api/google-ads/initialize', async (req, res) => {
+  const { accessToken, refreshToken } = req.body;
+  
+  if (!accessToken || !refreshToken) {
+    return res.status(400).json({ 
+      success: false, 
+      error: 'Tokens d\'accès requis' 
+    });
+  }
+
+  try {
+    await googleAdsService.initializeClient(accessToken, refreshToken);
+    
+    res.json({ 
+      success: true, 
+      message: 'Client Google Ads initialisé avec succès'
+    });
+  } catch (error) {
+    console.error('Erreur initialisation client:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Erreur lors de l\'initialisation du client Google Ads' 
+    });
+  }
+});
+
+// ENDPOINTS GOOGLE ADS DATA
+
+// Récupérer les comptes accessibles
+app.get('/api/google-ads/accounts', async (req, res) => {
+  try {
+    const accounts = await googleAdsService.getAccessibleAccounts();
+    
+    res.json({ 
+      success: true, 
+      accounts,
+      count: accounts.length
+    });
+  } catch (error) {
+    console.error('Erreur récupération comptes:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
+// Récupérer les campagnes d'un compte
+app.get('/api/google-ads/campaigns/:customerId', async (req, res) => {
+  const { customerId } = req.params;
+  const filters = req.query;
+  
+  try {
+    const campaigns = await googleAdsService.getCampaigns(customerId, filters);
+    
+    res.json({ 
+      success: true, 
+      campaigns,
+      count: campaigns.length,
+      customerId
+    });
+  } catch (error) {
+    console.error('Erreur récupération campagnes:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
+// Exécuter une requête IA générée vers Google Ads
+app.post('/api/google-ads/execute-query', async (req, res) => {
+  const { customerId, queryConfig } = req.body;
+  
+  if (!customerId || !queryConfig) {
+    return res.status(400).json({ 
+      success: false, 
+      error: 'Customer ID et configuration de requête requis' 
+    });
+  }
+
+  try {
+    const results = await googleAdsService.executeCustomQuery(customerId, queryConfig);
+    
+    res.json({ 
+      success: true, 
+      results,
+      customerId,
+      queryConfig
+    });
+  } catch (error) {
+    console.error('Erreur exécution requête Google Ads:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
+// Tester la connexion Google Ads
+app.post('/api/google-ads/test-connection', async (req, res) => {
+  const { customerId } = req.body;
+  
+  if (!customerId) {
+    return res.status(400).json({ 
+      success: false, 
+      error: 'Customer ID requis pour le test' 
+    });
+  }
+
+  try {
+    const testResult = await googleAdsService.testConnection(customerId);
+    
+    res.json({ 
+      success: testResult.success, 
+      message: testResult.message,
+      error: testResult.error,
+      customerId
+    });
+  } catch (error) {
+    console.error('Erreur test connexion:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
+// ENDPOINT INTÉGRÉ IA + GOOGLE ADS
+
+// Chat IA avec exécution automatique sur Google Ads
+app.post('/api/chat-with-execution', async (req, res) => {
+  const { message, sessionId, customerId, executeOnGoogleAds = false } = req.body;
+  
+  if (!message || message.trim().length === 0) {
+    return res.status(400).json({ 
+      error: 'Message requis',
+      success: false 
+    });
+  }
+
+  try {
+    // Étape 1: Générer la requête structurée avec l'IA
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
+    const prompt = systemPrompt + `\n\nRequête utilisateur: "${message}"\n\nRéponds uniquement avec le JSON structuré:`;
+    
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    
+    let jsonResponse;
+    try {
+      jsonResponse = JSON.parse(response.text());
+    } catch (parseError) {
+      return res.status(500).json({ 
+        error: 'Erreur de format de réponse IA',
+        success: false 
+      });
+    }
+
+    let googleAdsResults = null;
+    
+    // Étape 2: Exécuter sur Google Ads si demandé et configuré
+    if (executeOnGoogleAds && customerId && jsonResponse.intent && jsonResponse.reportType) {
+      try {
+        googleAdsResults = await googleAdsService.executeCustomQuery(customerId, jsonResponse);
+      } catch (adsError) {
+        console.error('Erreur exécution Google Ads:', adsError);
+        // On continue sans les données Google Ads
+      }
+    }
+
+    res.json({
+      success: true,
+      sessionId: sessionId || uuidv4(),
+      aiQuery: jsonResponse,
+      googleAdsResults: googleAdsResults,
+      originalMessage: message,
+      timestamp: new Date().toISOString(),
+      hasRealData: !!googleAdsResults
+    });
+
+  } catch (error) {
+    console.error('Erreur chat avec exécution:', error);
+    res.status(500).json({ 
+      error: 'Erreur interne du serveur',
+      success: false 
     });
   }
 });

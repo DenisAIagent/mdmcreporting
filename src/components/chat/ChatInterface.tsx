@@ -41,14 +41,27 @@ interface GoogleAdsQuery {
 interface ChatResponse {
   success: boolean;
   sessionId: string;
-  query: GoogleAdsQuery;
+  query?: GoogleAdsQuery;
+  aiQuery?: GoogleAdsQuery;
+  googleAdsResults?: any;
   originalMessage: string;
   timestamp: string;
+  hasRealData?: boolean;
+}
+
+interface ChatInterfaceProps {
+  isProduction?: boolean;
+  customerId?: string;
+  accountName?: string;
 }
 
 const BACKEND_URL = 'http://localhost:3001';
 
-export default function ChatInterface() {
+export default function ChatInterface({ 
+  isProduction = false, 
+  customerId, 
+  accountName 
+}: ChatInterfaceProps = {}) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +78,27 @@ export default function ChatInterface() {
     const welcomeMessage: Message = {
       id: '1',
       type: 'assistant',
-      content: `Bonjour ! 👋 Je suis votre assistant IA MDMC pour analyser vos campagnes Google Ads.
+      content: isProduction 
+        ? `🚀 **Mode Production Activé** - Données Google Ads Réelles
+
+Bonjour ! Je suis votre assistant IA MDMC connecté à vos vraies données Google Ads.
+
+${accountName && customerId ? `✅ **Compte connecté :** ${accountName} (ID: ${customerId})` : ''}
+
+**Capacités en mode production :**
+• 📊 Analyse de vos vraies campagnes en temps réel
+• 📈 Données historiques complètes de votre compte
+• 🎯 Recommandations basées sur vos performances réelles
+• 📋 Exports avec vos vraies métriques
+• ⚡ Requêtes directes sur l'API Google Ads
+
+**Exemples de requêtes :**
+• "Quelles sont mes campagnes les plus performantes ce mois ?"
+• "Analyse complète des conversions des 3 derniers mois"
+• "Export Excel de toutes mes campagnes actives"
+
+Posez-moi votre question, je vais interroger vos vraies données !`
+        : `Bonjour ! 👋 Je suis votre assistant IA MDMC pour analyser vos campagnes Google Ads.
 
 Je peux vous aider à :
 • 📊 Analyser les performances de vos campagnes
@@ -135,15 +168,29 @@ Comment puis-je vous aider aujourd'hui ?`,
     setMessages(prev => [...prev, loadingMessage]);
 
     try {
-      const response = await fetch(`${BACKEND_URL}/api/chat`, {
+      // Choisir l'endpoint en fonction du mode
+      const endpoint = isProduction 
+        ? `${BACKEND_URL}/api/chat-with-execution`
+        : `${BACKEND_URL}/api/chat`;
+
+      const requestBody = isProduction
+        ? {
+            message: messageToSend,
+            sessionId: sessionId,
+            customerId: customerId,
+            executeOnGoogleAds: true
+          }
+        : {
+            message: messageToSend,
+            sessionId: sessionId
+          };
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          message: messageToSend,
-          sessionId: sessionId
-        })
+        body: JSON.stringify(requestBody)
       });
 
       const data: ChatResponse = await response.json();
@@ -151,15 +198,20 @@ Comment puis-je vous aider aujourd'hui ?`,
       if (data.success) {
         setSessionId(data.sessionId);
         
+        // Utiliser aiQuery pour la production, query pour la démo
+        const queryData = data.aiQuery || data.query;
+        
         // Générer une réponse explicative
-        const explanationContent = generateExplanation(data.query);
+        const explanationContent = isProduction 
+          ? generateProductionExplanation(queryData, data.googleAdsResults, data.hasRealData)
+          : generateExplanation(queryData);
         
         const assistantMessage: Message = {
           id: data.sessionId,
           type: 'assistant',
           content: explanationContent,
           timestamp: new Date(data.timestamp),
-          queryData: data.query
+          queryData: queryData
         };
 
         // Remplacer le message de chargement
@@ -205,6 +257,47 @@ Essayez de reformuler votre demande ou contactez le support technique.`,
 🔄 **Prochaine étape :** Cette requête sera utilisée pour interroger l'API Google Ads et récupérer vos données.
 
 *Note : L'intégration complète avec Google Ads sera ajoutée dans la prochaine phase de développement.*`;
+  };
+
+  const generateProductionExplanation = (query: GoogleAdsQuery, googleAdsResults: any, hasRealData?: boolean): string => {
+    const dateRange = formatDateRange(query.dateRange);
+    const metrics = query.metrics.join(', ');
+    const exportInfo = query.exportFormat ? `\n\n📄 **Export demandé :** ${query.exportFormat.toUpperCase()}` : '';
+    
+    if (hasRealData && googleAdsResults) {
+      const resultCount = googleAdsResults.data ? googleAdsResults.data.length : 0;
+      
+      return `🚀 **Données Google Ads Récupérées !**
+
+✅ **Connexion réussie** à votre compte Google Ads
+📋 **Type de rapport :** ${getReportTypeLabel(query.reportType)}
+📅 **Période :** ${dateRange}
+📊 **Métriques :** ${metrics}
+🎯 **Tri :** ${query.orderBy.field} (${query.orderBy.sortOrder === 'DESC' ? 'décroissant' : 'croissant'})
+📦 **Résultats trouvés :** ${resultCount} éléments${exportInfo}
+
+📈 **Requête GAQL exécutée :**
+\`\`\`
+${googleAdsResults.query || 'Requête générée par l\'IA'}
+\`\`\`
+
+💡 **Vos vraies données sont maintenant disponibles !** Demandez-moi d'autres analyses ou précisez un format d'export.`;
+    } else {
+      return `⚠️ **Requête Analysée - Données en attente**
+
+📋 **Type de rapport :** ${getReportTypeLabel(query.reportType)}
+📅 **Période :** ${dateRange}
+📊 **Métriques :** ${metrics}
+🎯 **Tri :** ${query.orderBy.field} (${query.orderBy.sortOrder === 'DESC' ? 'décroissant' : 'croissant'})
+📦 **Limite :** ${query.limit} résultats${exportInfo}
+
+❌ **Problème de connexion :** La requête a été comprise mais les données Google Ads n'ont pas pu être récupérées.
+
+🔧 **Vérifiez :**
+• Votre connexion Google Ads est active
+• Les permissions d'accès au compte
+• La validité de votre Developer Token`;
+    }
   };
 
   const formatDateRange = (dateRange: any): string => {

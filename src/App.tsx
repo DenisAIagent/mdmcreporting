@@ -7,6 +7,7 @@ import DashboardPage from './pages/DashboardPage';
 import AdminPage from './pages/AdminPage';
 import ChatPage from './pages/ChatPage';
 import DemoPage from './pages/DemoPage';
+import ProductionPage from './pages/ProductionPage';
 import NotFound from './pages/NotFound';
 import { AuthProvider } from './contexts/AuthContext';
 import { AccountProvider } from './contexts/AccountContext';
@@ -22,12 +23,13 @@ const App = () => (
           <Toaster />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Navigate to="/demo" replace />} />
+              <Route path="/" element={<Navigate to="/production" replace />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/demo" element={<DemoPage />} />
+              <Route path="/production" element={<ProductionPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

@@ -11,11 +11,19 @@ export default defineConfig(({ mode }) => ({
     },
   },
   server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
+    // Proxy uniquement en développement
+    ...(mode === 'development' ? {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3001',
+          changeOrigin: true,
+        },
       },
-    },
+    } : {}),
+  },
+  preview: {
+    // Configuration pour Railway production
+    host: '0.0.0.0',
+    port: Number(process.env.PORT) || 4173,
   },
 }));

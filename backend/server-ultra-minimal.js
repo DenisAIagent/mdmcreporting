@@ -9,17 +9,23 @@ console.log('GOOGLE_ADS_REFRESH_TOKEN:', process.env.GOOGLE_ADS_REFRESH_TOKEN ? 
 const express = require('express');
 const app = express();
 
-// Route de santé
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development',
-    port: process.env.PORT || 3001
-  });
+// Configuration CORS simple et compatible
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
 });
 
-// Root endpoint
+// Middleware JSON
+app.use(express.json());
+
+// ✅ ROUTES PRINCIPALES (sans patterns complexes)
 app.get('/', (req, res) => {
   res.json({
     message: 'MDMC Reporting Backend is running...',
@@ -29,7 +35,25 @@ app.get('/', (req, res) => {
   });
 });
 
-// Route pour vérifier la configuration
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    port: process.env.PORT || 3001
+  });
+});
+
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    port: process.env.PORT || 3001,
+    message: 'Backend API is running'
+  });
+});
+
 app.get('/api/config-check', (req, res) => {
   const config = {
     environment: process.env.NODE_ENV || 'development',
@@ -59,7 +83,6 @@ app.get('/api/config-check', (req, res) => {
   });
 });
 
-// Route simple pour les comptes
 app.get('/api/accounts', (req, res) => {
   res.json({
     success: true,
@@ -69,10 +92,24 @@ app.get('/api/accounts', (req, res) => {
   });
 });
 
+// ✅ ROUTES SPÉCIFIQUES ASSETS (sans patterns complexes)
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end(); // No Content
+});
+
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send('User-agent: *\nDisallow: /api/\nAllow: /health');
+});
+
+// ❌ SUPPRESSION de toutes les routes catch-all problématiques !
+// Pas de app.use('*'), pas de app.get(['*.ico', ...]), etc.
+// Express gérera les 404 naturellement
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/health`);
-}); 
+});

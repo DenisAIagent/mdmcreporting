@@ -17,7 +17,10 @@ export function PremiumProvider({ children }: { children: React.ReactNode }) {
 
   const checkBackendConnection = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/health');
+      // Utiliser la configuration d'environnement
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+      const response = await fetch(`${API_BASE_URL}/api/health`);
+      
       if (response.ok) {
         const data = await response.json();
         setIsBackendConnected(true);

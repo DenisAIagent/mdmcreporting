@@ -22,7 +22,10 @@ const AccountSelector = () => {
     data: accounts, 
     isLoading, 
     error 
-  } = useQuery('googleAdsAccounts', ApiService.getAccounts);
+  } = useQuery({
+    queryKey: ['googleAdsAccounts'],
+    queryFn: ApiService.getAccounts
+  });
 
   const [isOpen, setIsOpen] = useState(false);
   const selectedAccountId = useAdsDataStore((state) => state.selectedAccountId);

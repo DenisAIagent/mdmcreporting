@@ -96,6 +96,43 @@ app.get('/api/accounts', (req, res) => {
   });
 });
 
+// 🔧 CORRECTION ERREUR 502 FAVICON.ICO
+// Route spécifique pour favicon.ico (évite l'erreur 502)
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end(); // No Content - évite l'erreur 502
+});
+
+// Route pour robots.txt (souvent demandé aussi)
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send('User-agent: *\nDisallow: /api/\nAllow: /health');
+});
+
+// Routes catch-all pour assets statiques manquants
+app.get(['*.ico', '*.png', '*.jpg', '*.css', '*.js', '*.svg'], (req, res) => {
+  res.status(404).json({
+    error: 'Asset non trouvé',
+    path: req.path,
+    message: 'Ce backend ne sert que les APIs - Assets servis par le frontend'
+  });
+});
+
+// Route catch-all pour toutes les autres requêtes non gérées
+app.use('*', (req, res) => {
+  res.status(404).json({
+    error: 'Route non trouvée',
+    path: req.path,
+    availableRoutes: [
+      'GET /',
+      'GET /health',
+      'GET /api/health',
+      'GET /api/config-check',
+      'GET /api/accounts'
+    ],
+    timestamp: new Date().toISOString()
+  });
+});
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {

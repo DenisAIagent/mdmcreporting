@@ -16,11 +16,12 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
+  origin: process.env.NODE_ENV === 'production'
     ? ['https://mdmcreporting-production.up.railway.app', 'https://mdmcreporting.vercel.app']
     : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'],
   credentials: true
 }));
+
 app.use(helmet());
 app.use(compression());
 app.use(express.json());
@@ -70,8 +71,8 @@ app.get('/api/config-check', (req, res) => {
     success: missingVars.length === 0,
     config,
     missingVariables: missingVars,
-    message: missingVars.length === 0 
-      ? 'Configuration complète' 
+    message: missingVars.length === 0
+      ? 'Configuration complète'
       : `Variables manquantes: ${missingVars.join(', ')}`
   });
 });
@@ -109,8 +110,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).json(error);
 });
 
-// Route 404 pour les routes non trouvées
-app.use('*', (req, res) => {
+// ✅ Route 404 corrigée pour Express 5.x - utilise app.all() au lieu de app.use()
+app.all('*', (req, res) => {
   res.status(404).json({
     success: false,
     message: 'Route non trouvée',
@@ -126,4 +127,4 @@ app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/health`);
-}); 
+});

@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-// Debug: Vérifier si les variables d'environnement sont chargées
 console.log('🔍 Debug - Variables d\'environnement:');
 console.log('CUSTOMER_ID:', process.env.CUSTOMER_ID ? '✅ Présent' : '❌ Manquant');
 console.log('GOOGLE_ADS_CLIENT_ID:', process.env.GOOGLE_ADS_CLIENT_ID ? '✅ Présent' : '❌ Manquant');
@@ -8,27 +7,14 @@ console.log('GOOGLE_ADS_DEVELOPER_TOKEN:', process.env.GOOGLE_ADS_DEVELOPER_TOKE
 console.log('GOOGLE_ADS_REFRESH_TOKEN:', process.env.GOOGLE_ADS_REFRESH_TOKEN ? '✅ Présent' : '❌ Manquant');
 
 const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const compression = require('compression');
-
 const app = express();
 
-// Middlewares
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://mdmcreporting-production.up.railway.app', 'https://mdmcreporting.vercel.app']
-    : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'],
-  credentials: true
-}));
-app.use(helmet());
-app.use(compression());
+// Middleware JSON simple
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Route de santé pour Railway
+// Route de santé
 app.get('/health', (req, res) => {
-  res.status(200).json({
+  res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
@@ -76,46 +62,12 @@ app.get('/api/config-check', (req, res) => {
   });
 });
 
-// Route simple pour les comptes (sans Google Ads pour l'instant)
+// Route simple pour les comptes
 app.get('/api/accounts', (req, res) => {
   res.json({
     success: true,
     message: 'Backend fonctionnel - Google Ads API non configurée',
     accounts: [],
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Gestionnaire d'erreur global
-app.use((err, req, res, next) => {
-  console.error('❌ Erreur serveur:', err);
-  
-  // S'assurer de toujours retourner du JSON
-  res.setHeader('Content-Type', 'application/json');
-  
-  const error = {
-    success: false,
-    message: err.message || 'Erreur serveur interne',
-    timestamp: new Date().toISOString(),
-    path: req.path,
-    method: req.method
-  };
-
-  if (process.env.NODE_ENV === 'development') {
-    error.stack = err.stack;
-  }
-
-  const statusCode = err.statusCode || 500;
-  res.status(statusCode).json(error);
-});
-
-// Route 404 pour les routes non trouvées
-app.use('*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route non trouvée',
-    path: req.path,
-    method: req.method,
     timestamp: new Date().toISOString()
   });
 });

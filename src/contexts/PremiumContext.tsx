@@ -19,7 +19,7 @@ export function PremiumProvider({ children }: { children: React.ReactNode }) {
     try {
       // Utiliser la configuration d'environnement
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
-      const response = await fetch(`${API_BASE_URL}/api/health`);
+      const response = await fetch(`${API_BASE_URL}/health`);
       
       if (response.ok) {
         const data = await response.json();

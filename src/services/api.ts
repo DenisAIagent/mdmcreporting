@@ -32,7 +32,7 @@ export interface CampaignData {
 }
 
 class ApiService {
-  private baseURL = API_BASE_URL;
+  private baseURL = `${API_BASE_URL}/api`;
   private token: string | null = null;
 
   setToken(token: string) {

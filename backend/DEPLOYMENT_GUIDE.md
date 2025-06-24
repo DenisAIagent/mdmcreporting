@@ -5,31 +5,30 @@
 ### Problème résolu
 L'erreur `TypeError: Missing parameter name at 1: https://git.new/pathToRegexpError` était causée par un conflit entre Express 5.x et la route catch-all `app.use('*')`.
 
-### ✅ Solutions disponibles
+### ✅ Solutions appliquées
 
-#### 1. Solution immédiate (recommandée)
-Utiliser `server-minimal.js` qui fonctionne parfaitement :
-```bash
-# Dans Railway, modifier la commande de démarrage vers :
-node server-minimal.js
+#### 1. Solution définitive (appliquée)
+Le `package.json` a été modifié pour utiliser `server-minimal.js` par défaut :
+```json
+{
+  "scripts": {
+    "start": "node server-minimal.js",
+    "start-full": "node server.js"
+  }
+}
 ```
 
-#### 2. Solution avec server.js corrigé
-Le fichier `server.js` a été corrigé pour remplacer :
-- `app.use('*')` par `app.all('*')` pour compatibilité Express 5.x
-- Toutes les autres fonctionnalités sont conservées
+#### 2. Script de backup disponible
+Si vous voulez utiliser `server.js` corrigé plus tard :
+```bash
+npm run start-full
+```
 
 ### 🔧 Configuration Railway
 
-**Commande de démarrage recommandée :**
-```bash
-node server-minimal.js
-```
+**✅ Automatique :** Railway utilisera maintenant `server-minimal.js` par défaut via `npm start`
 
-**Ou si vous préférez server.js :**
-```bash
-node server.js
-```
+**Pas de modification nécessaire** dans Railway - le redéploiement sera automatique.
 
 ### 📋 Routes disponibles
 
